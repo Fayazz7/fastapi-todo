@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from fastapi import APIRouter
+from app.schemas.todo import TodoCreate, TodoResponse
 
 router = APIRouter(
     prefix="/todos",
@@ -8,23 +9,15 @@ router = APIRouter(
 
 todos = []
 
-class ToDo(BaseModel):
-    id: int
-    title: str
-    completed: bool = False
-
 @router.get("/")
 def home():
     return {"message": "Hello world!!"} 
 
-@router.post("/create")
-def create_todo(todo: ToDo):
+@router.post("/create", response_model=TodoResponse)
+def create_todo(todo: TodoCreate):
     todos.append(todo)
     
-    return {
-        "message": "Todo Created",
-        "todo": todo
-    }
+    return todo
     
 @router.get("/list")
 def list_todos():
