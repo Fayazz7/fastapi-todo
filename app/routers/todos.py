@@ -28,7 +28,7 @@ def create_todo(todo:TodoCreate, db:Session=Depends(get_db)):
 def list_todos(db:Session=Depends(get_db)):
     statement = select(Todo)
     results = db.execute(statement=statement)
-    todos = results.scalars().first()
+    todos = results.scalars()
     return todos
 
 @router.patch("/{todo_id}", response_model=TodoResponse)
