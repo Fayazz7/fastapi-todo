@@ -1,10 +1,17 @@
+from urllib.parse import quote_plus
 from app.config import Settings, get_settings
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
 
 settings = get_settings()
 
-DATABASE_URL = f"postgresql://{settings.DATABASES_USER}:{settings.DATABASES_PASSWORD}@localhost:5432/{settings.DATABASES_NAME}"
+encoded_password = quote_plus(settings.DATABASES_PASSWORD)
+
+DATABASE_URL = (
+    f"postgresql://{settings.DATABASES_USER}:"
+    f"{encoded_password}"
+    f"@localhost:5432/{settings.DATABASES_NAME}"
+)
 
 engine = create_engine(DATABASE_URL)
 
